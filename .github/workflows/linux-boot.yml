@@ -1,0 +1,27 @@
+name: Linux boot test
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  boot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Boot Linux and run uname
+        uses: wokwi/wokwi-ci-action@v1
+        with:
+          token: ${{ secrets.WOKWI_CLI_TOKEN }}
+          scenario: scenarios/linux-boot.test.yaml
+          timeout: 30000
+          serial_log_file: boot.log
+
+      - name: Upload the console log
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: console
+          path: boot.log

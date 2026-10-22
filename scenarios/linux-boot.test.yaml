@@ -1,0 +1,16 @@
+name: 'Linux boots to a shell'
+version: 1
+author: 'Uri Shaked'
+
+steps:
+  # Boot chain: U-Boot SPL, OpenSBI, U-Boot, then the kernel
+  - wait-serial: 'U-Boot SPL'
+  - wait-serial: 'OpenSBI'
+  - wait-serial: 'Linux version 6.18'
+  - wait-serial: 'Run /sbin/init as init process'
+  # busybox init asks for a key press before it starts the shell
+  - wait-serial: 'Please press Enter to activate this console.'
+  - write-serial: "\n"
+  - wait-serial: 'root@esp32s31:~#'
+  - write-serial: "uname -a\n"
+  - wait-serial: 'Linux esp32s31 6.18.0'

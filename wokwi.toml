@@ -1,0 +1,5 @@
+# Wokwi project configuration. Reference: https://docs.wokwi.com/vscode/project-config
+# The flash image is loaded at offset 0 (see "firmwareOffset" in diagram.json).
+[wokwi]
+version = 1
+firmware = 's31_full_flash.bin'
