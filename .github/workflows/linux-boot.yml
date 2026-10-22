@@ -19,6 +19,20 @@ jobs:
           timeout: 30000
           serial_log_file: boot.log
 
+      - name: Show the console log in the job summary
+        if: always() && hashFiles('boot.log') != ''
+        run: |
+          {
+            echo '<details><summary>Serial console</summary>'
+            echo
+            echo '```'
+            # drop carriage returns and the terminal escape sequences busybox prints,
+            # and end with a newline so the fence below starts on its own line
+            sed -e 's/\r$//' -e 's/\x1b\[[0-9;?]*[A-Za-z]//g' -e 's/\x1b[78]//g' -e '$a\' boot.log
+            echo '```'
+            echo '</details>'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Upload the console log
         if: always()
         uses: actions/upload-artifact@v7
